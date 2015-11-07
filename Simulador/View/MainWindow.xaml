@@ -1,0 +1,67 @@
+﻿<Window x:Class="Xb.Simulador.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="600" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350px" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Grid.Column="0" Header="Gestio del temps" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Padding="5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Temps transcorregut : " Margin="0,0,5,0" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding EllapsedTime}" Width="60px" />
+                <Button Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Center" Width="15" Margin="25,0,10,0" Command="{Binding Path=SlowTimeCommand}"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding AcceleratedTime}" Width="40px" />
+                <Button Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Center" Width="15" Margin="10,0,25,0" Command="{Binding Path=FastTimeCommand}"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Grid.Column="0" Header="Valors reals" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Padding="5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Altura real : " Margin="0,0,5,0" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding AlturaReal}" Width="80px" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Velocitat real : " Margin="10,0,5,0" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding VelocidadReal}" Width="60px" />
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Grid.Column="0" Header="Valors del satelit" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Padding="5" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60px" />
+                    <ColumnDefinition Width="100px" />
+                    <ColumnDefinition Width="60px" />
+                    <ColumnDefinition Width="100px" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Altura : " Grid.Row="0" Grid.Column="0" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Altura}"  Grid.Row="0" Grid.Column="1" />
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Inclinació : " Grid.Row="0" Grid.Column="2" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Inclinacion}"  Grid.Row="0" Grid.Column="3" />
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Apoapsis : " Grid.Row="1" Grid.Column="0" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Apoapsis}"  Grid.Row="1" Grid.Column="1" />
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Periapsis : " Grid.Row="1" Grid.Column="2" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Periapsis}"  Grid.Row="1" Grid.Column="3" />
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Accion : " Grid.Row="2" Grid.Column="0" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Accion}"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" />
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="Actitud : " Grid.Row="3" Grid.Column="0" />
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Actitud}"  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" />
+            </Grid>
+        </GroupBox>
+        <GroupBox  Grid.Row="0" Grid.Column="1" Header="Accions del satelit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Padding="5" Width="400">
+            <ListBox VerticalAlignment="Top" ItemsSource="{Binding Acciones}" />
+        </GroupBox>
+        <GroupBox  Grid.Row="1" Grid.Column="1" Header="Actituts del satelit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Padding="5" Width="400">
+            <ListBox VerticalAlignment="Top" ItemsSource="{Binding Actitudes}" />
+        </GroupBox>
+    </Grid>
+</Window>

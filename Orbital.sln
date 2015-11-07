@@ -1,0 +1,74 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculadorOrbital", "CalculadorOrbital\CalculadorOrbital.csproj", "{85F9594D-68EE-4D10-95A6-6D22F2476DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulador", "Simulador\Simulador.csproj", "{3339A960-0DAB-413D-8E5B-8C0EDD6F72FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SateliteBackend", "SateliteBackend\SateliteBackend.csproj", "{B065684C-0A96-476A-8B34-E9F291C8F1D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SateliteInterfaces", "SateliteInterfaces\SateliteInterfaces.csproj", "{7407F7B7-48AE-4816-BB27-CB92AB5DF1F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SateliteWpfImplementation", "SateliteWpfImplementation\SateliteWpfImplementation.csproj", "{498CAC1E-C348-4F82-B38E-9D2B5A681055}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{69156564-FE74-4773-B85C-478A46A59948}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTests", "ModelTests\ModelTests.csproj", "{4583271C-0D04-4A05-AF8E-79AEE9EF9813}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85F9594D-68EE-4D10-95A6-6D22F2476DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85F9594D-68EE-4D10-95A6-6D22F2476DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85F9594D-68EE-4D10-95A6-6D22F2476DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85F9594D-68EE-4D10-95A6-6D22F2476DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3339A960-0DAB-413D-8E5B-8C0EDD6F72FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3339A960-0DAB-413D-8E5B-8C0EDD6F72FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3339A960-0DAB-413D-8E5B-8C0EDD6F72FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3339A960-0DAB-413D-8E5B-8C0EDD6F72FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B065684C-0A96-476A-8B34-E9F291C8F1D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B065684C-0A96-476A-8B34-E9F291C8F1D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B065684C-0A96-476A-8B34-E9F291C8F1D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B065684C-0A96-476A-8B34-E9F291C8F1D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7407F7B7-48AE-4816-BB27-CB92AB5DF1F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7407F7B7-48AE-4816-BB27-CB92AB5DF1F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7407F7B7-48AE-4816-BB27-CB92AB5DF1F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7407F7B7-48AE-4816-BB27-CB92AB5DF1F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{498CAC1E-C348-4F82-B38E-9D2B5A681055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{498CAC1E-C348-4F82-B38E-9D2B5A681055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{498CAC1E-C348-4F82-B38E-9D2B5A681055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{498CAC1E-C348-4F82-B38E-9D2B5A681055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4583271C-0D04-4A05-AF8E-79AEE9EF9813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4583271C-0D04-4A05-AF8E-79AEE9EF9813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4583271C-0D04-4A05-AF8E-79AEE9EF9813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4583271C-0D04-4A05-AF8E-79AEE9EF9813}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+		Policies = $0
+		$0.TextStylePolicy = $3
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$3.FileWidth = 120
+		$3.TabWidth = 4
+		$3.IndentWidth = 4
+		$3.EolMarker = Unix
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+	EndGlobalSection
+EndGlobal
