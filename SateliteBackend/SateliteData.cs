@@ -51,6 +51,8 @@ namespace satelite.backend
             }
         }
 
+        public SateliteData() { }
+
         public SateliteData(Constantes constantes, Vector posicion, Vector velocidad)
         {
             this.constantes = constantes;
@@ -79,6 +81,14 @@ namespace satelite.backend
             Periapsis = -1;
             Inclinacion = -1;
             OrbitaSubiendo = null;
+        }
+
+        public void AsignarConstantes(Constantes constantes)
+        {
+            if (this.constantes != null)
+                throw new ArgumentException("Constantes ya asignadas");
+
+            this.constantes = constantes;
         }
     }
 }

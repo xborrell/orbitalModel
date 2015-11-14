@@ -98,6 +98,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="SateliteDataConverter.cs" />
+    <Compile Include="VectorConverter.cs" />
+    <Compile Include="OrbitalContractResolver.cs" />
     <Compile Include="SateliteTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestFactory.cs" />
