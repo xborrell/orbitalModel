@@ -1,0 +1,254 @@
+﻿<UserControl x:Class="Xb.Simulador.View.PlayerControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:Xb.Simulador.View" 
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="500">
+    <UserControl.Resources>
+        <Image x:Key="Play" Source="../img/Player Play.png" Height="32" Width="32" />
+        <Image x:Key="Next" Source="../img/Player Next.png" Height="32" Width="32" />
+        <Image x:Key="FastForward" Source="../img/Player FastFwd.png" Height="32" Width="32" />
+        <Image x:Key="FastReward" Source="../img/Player FastRev.png" Height="32" Width="32" />
+        <Image x:Key="Pause" Source="../img/Player Pause.png" Height="32" Width="32" />
+        <Image x:Key="Previous" Source="../img/Player Previous.png" Height="32" Width="32" />
+        <Image x:Key="Stop" Source="../img/Player Stop.png" Height="32" Width="32" />
+
+        <LinearGradientBrush x:Key="Flat3DBorderBrush"
+                         StartPoint="0.499,0" EndPoint="0.501,1">
+            <GradientStop Color="#FFF" Offset="0" />
+            <GradientStop Color="#DDD" Offset="0.01" />
+            <GradientStop Color="#AAA" Offset="0.99" />
+            <GradientStop Color="#888" Offset="1" />
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="SliderThumbGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#f7f7f7"/>
+            <GradientStop Offset="1" Color="#bcbcbc"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="SliderButtonStyle" TargetType="{x:Type RepeatButton}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="Transparent" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Height" Value="12"/>
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Ellipse 
+                            Name="Ellipse" 
+                            Fill="{DynamicResource SliderThumbGradient}"
+                            Stroke="#404040"
+                            StrokeThickness="1" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Ellipse" Property="Fill" Value="#808080"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Ellipse" Property="Fill" Value="#EEEEEE"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DecreaseSliderButtonStyle" TargetType="{x:Type RepeatButton}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Height="12" Background="Red" CornerRadius="6" Margin="0,0,-12,0" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="HorizontalSlider" TargetType="{x:Type Slider}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding Slider.MinHeight}"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TickBar 
+                    Name="TopTick"
+                    SnapsToDevicePixels="True" 
+                    Placement="Top"
+                    Fill="#404040"
+                    Height="4"
+                    Visibility="Collapsed" />
+                <Border 
+                    Name="TrackBackground"
+                    Margin="0"
+                    CornerRadius="6" 
+                    Height="12"
+                    Grid.Row="1"
+                    Background="#0a0a0a" 
+                    BorderBrush="#121212"
+                    BorderThickness="1">
+                    <Canvas Margin="-6,-1">
+                        <Rectangle x:Name="PART_SelectionRange" 
+                                   Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" 
+                                   Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" 
+                                   StrokeThickness="1.0" 
+                                   Height="4.0" 
+                                   Visibility="visible"/>
+                    </Canvas>
+                </Border>
+
+                <Track Grid.Row="1" Name="PART_Track">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton 
+                            Style="{StaticResource DecreaseSliderButtonStyle}"
+                            Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumbStyle}" />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton 
+                            Style="{StaticResource SliderButtonStyle}"
+                            Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+                <TickBar 
+                    Name="BottomTick"
+                    SnapsToDevicePixels="True" 
+                    Grid.Row="2"
+                    Fill="{TemplateBinding Foreground}"
+                    Placement="Bottom"
+                    Height="4"
+                    Visibility="Collapsed" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="TickPlacement" Value="TopLeft">
+                    <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="TickPlacement" Value="BottomRight">
+                    <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="TickPlacement" Value="Both">
+                    <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style TargetType="{x:Type Slider}">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinWidth" Value="104" />
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+                    <Setter Property="IsSelectionRangeEnabled" Value="True" />
+                    <Setter Property="SelectionStart" Value="{Binding Value, RelativeSource={RelativeSource Self}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Width="400">
+
+            <Button Margin="2" Command="{Binding Path=BackPageCommand}">
+                <Image Source="../img/Player Previous Page.png" />
+            </Button>
+
+            <Button Margin="2" Command="{Binding Path=BackStepCommand}">
+                <Image Source="../img/Player Previous.png" />
+            </Button>
+
+            <Button Margin="2" Command="{Binding PlayPauseCommand}">
+                <Image>
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Source" Value="../img/Player Play.png" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                    <Setter Property="Source" Value="../img/Player Pause.png" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+            </Button>
+
+            <Button Margin="2" Command="{Binding Path=NextStepCommand}">
+                <Image Source="../img/Player Next.png" />
+            </Button>
+
+            <Button Margin="2" Command="{Binding Path=NextPageCommand}">
+                <Image Source="../img/Player Next Page.png" />
+            </Button>
+            
+            <Button Margin="25,2,2,2" Command="{Binding Path=SlowTimeCommand}">
+                <Image Source="../img/Player FastRev.png" />
+            </Button>
+
+            <Border Width="86" Height="32" BorderBrush="LightGray" BorderThickness="0,0,2,2">
+                <Border Width="84" Height="32" BorderBrush="White" BorderThickness="2,2,0,0" Background="#FF370000" HorizontalAlignment="Right" Padding="4">
+                    <TextBlock 
+                    FontFamily="../font/#NI7SEG"
+                    FontSize="19" 
+                    Foreground="Red"
+                    Background="#FF370000"
+                    Text="{Binding Path=TimeLapse}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                />
+                </Border>
+            </Border>
+
+            <Button Margin="2" Command="{Binding Path=FastTimeCommand}">
+                <Image Source="../img/Player FastFwd.png" />
+            </Button>
+            
+        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100px" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Text="2d 12:25:34,27" HorizontalAlignment="Center" />
+            <Slider Grid.Column="1" 
+                        Margin="10,0"
+                        HorizontalContentAlignment="Stretch" 
+                        Maximum="100" 
+                        Value="20" 
+                        SelectionEnd="45"
+                        UseLayoutRounding="True" 
+                        Foreground="Red" 
+                        >
+                <!--ValueChanged="Slider_ValueChanged" -->
+                <Slider.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF643C3C" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkDarkBrushKey}" Color="#FF643C3C" />
+                </Slider.Resources>
+            </Slider>
+        </Grid>
+    </StackPanel>
+</UserControl>

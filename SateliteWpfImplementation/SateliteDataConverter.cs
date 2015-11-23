@@ -2,11 +2,6 @@
 using Newtonsoft.Json;
 using satelite.backend;
 using satelite.interfaces;
-using SimpleFixture;
-using Xunit;
-using FluentAssertions;
-using SimpleFixture.NSubstitute;
-using NSubstitute;
 using satelite.implementation.wpf;
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Converters;
@@ -15,7 +10,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
 
-namespace ModelTests
+namespace satelite.implementation.wpf
 {
     public class SateliteDataConverter : JsonConverter
     {

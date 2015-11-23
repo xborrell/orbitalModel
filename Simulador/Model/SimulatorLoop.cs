@@ -13,7 +13,7 @@ namespace Xb.Simulador.Model
 {
     public class SimulatorLoop
     {
-        public TimeSpan EllapsedTime { get; protected set; }
+        public TimeSpan ActualTime { get; protected set; }
         public double AcceleratedTime { get; set; }
         public ISatelite Satelite { get; protected set; }
 
@@ -28,8 +28,8 @@ namespace Xb.Simulador.Model
 
         public SimulatorLoop(IToolsFactory factory, Constantes constantes)
         {
-            EllapsedTime = new TimeSpan();
-            AcceleratedTime = 1;
+            ActualTime = new TimeSpan();
+            AcceleratedTime = 0;
             posicionInicial = factory.CreateVector(-822.79774F, -4438.63582F, 5049.31502F);
             velocidadInicial = factory.CreateVector(7.418175658F, .709253354F, 1.828703177F);
 
@@ -59,7 +59,7 @@ namespace Xb.Simulador.Model
 
         async Task ExecuteAsync()
         {
-            EllapsedTime = new TimeSpan();
+            ActualTime = new TimeSpan();
             long tiempoAcumuladoEnTicks = DateTime.Now.Ticks;
 
             while (!_cancelSource.IsCancellationRequested)
@@ -84,7 +84,7 @@ namespace Xb.Simulador.Model
                 deltaEnSegundos -= constantes.FixedDeltaTime;
             }
 
-            EllapsedTime += TimeSpan.FromTicks(deltaEnTicks);
+            ActualTime += TimeSpan.FromTicks(deltaEnTicks);
         }
     }
 }

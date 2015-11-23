@@ -16,7 +16,8 @@ namespace satelite.implementation.wpf
         {
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainWindowViewModel>().AsSelf();
-            builder.RegisterType<SimulatorLoop>().AsSelf();
+            builder.RegisterType<SimulatorLoop>().AsSelf().SingleInstance();
+            builder.RegisterType<TimeManager>().AsSelf();
         }
     }
 }
