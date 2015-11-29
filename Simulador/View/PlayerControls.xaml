@@ -169,7 +169,7 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <StackPanel Orientation="Horizontal" Width="400">
+        <StackPanel Orientation="Horizontal" Width="403">
 
             <Button Margin="2" Command="{Binding Path=BackPageCommand}">
                 <Image Source="../img/Player Previous Page.png" />
@@ -233,7 +233,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock Text="2d 12:25:34,27" HorizontalAlignment="Center" />
+            <TextBlock Text="{Binding Path=ActualTime}" HorizontalAlignment="Center" />
             <Slider Grid.Column="1" 
                         Margin="10,0"
                         HorizontalContentAlignment="Stretch" 

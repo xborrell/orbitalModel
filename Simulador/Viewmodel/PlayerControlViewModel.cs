@@ -15,17 +15,16 @@ namespace Xb.Simulador.Viewmodel
     {
         public bool IsPlaying
         {
-            get { return isPlaying; }
-            protected set
+            get { return timeManager.IsPlaying; }
+        }
+
+        public string ActualTime
+        {
+            get
             {
-                if (isPlaying != value)
-                {
-                    isPlaying = value;
-                    RaisePropertyChanged("IsPlaying");
-                }
+                return string.Format(@"{0:%d}d. {0:hh\:mm\:ss},{0:ff}", timeManager.ActualTime);
             }
         }
-        bool isPlaying = false;
 
         public string TimeLapse
         {
@@ -33,27 +32,17 @@ namespace Xb.Simulador.Viewmodel
             {
                 switch (timeManager.FactorTemporal)
                 {
-                    case TimeIntervals.Menos1000: return "- 1000";
-                    case TimeIntervals.Menos500: return "- 500";
-                    case TimeIntervals.Menos100: return "- 100";
-                    case TimeIntervals.Menos50: return "- 50";
-                    case TimeIntervals.Menos10: return "- 10";
-                    case TimeIntervals.Menos5: return "- 5";
-                    case TimeIntervals.Menos2: return "- 2";
-                    case TimeIntervals.Menos1: return "- 1";
-                    case TimeIntervals.MenosMedio: return "- 1/2";
-                    case TimeIntervals.MenosCuarto: return "- 1/4";
-                    case TimeIntervals.Cero: return "Pause";
-                    case TimeIntervals.MasCuarto: return "+ 1/4";
-                    case TimeIntervals.MasMedio: return "+ 1/2";
-                    case TimeIntervals.Mas1: return "+ 1";
-                    case TimeIntervals.Mas2: return "+ 2";
-                    case TimeIntervals.Mas5: return "+ 5";
-                    case TimeIntervals.Mas10: return "+ 10";
-                    case TimeIntervals.Mas50: return "+ 50";
-                    case TimeIntervals.Mas100: return "+ 100";
-                    case TimeIntervals.Mas500: return "+ 500";
-                    case TimeIntervals.Mas1000: return "+ 1000";
+                    case TimeIntervals.UnDecimo: return "+ 1/10";
+                    case TimeIntervals.UnCuarto: return "+ 1/4";
+                    case TimeIntervals.XUnMedio: return "+ 1/2";
+                    case TimeIntervals.X1: return "+ 1";
+                    case TimeIntervals.X2: return "+ 2";
+                    case TimeIntervals.X5: return "+ 5";
+                    case TimeIntervals.X10: return "+ 10";
+                    case TimeIntervals.X50: return "+ 50";
+                    case TimeIntervals.X100: return "+ 100";
+                    case TimeIntervals.X500: return "+ 500";
+                    case TimeIntervals.X1000: return "+ 1000";
                     default: throw new ArgumentException();
                 }
             }
@@ -67,7 +56,9 @@ namespace Xb.Simulador.Viewmodel
             this.timeManager = timeManager;
 
             Observer = new PropertyObserver<TimeManager>(this.timeManager);
-            Observer.RegisterHandler(n => n.FactorTemporal, n => base.RaisePropertyChanged("TimeLapse"));
+            Observer.RegisterHandler(n => n.FactorTemporal, n => base.RaisePropertyChanged("TimeLapse"))
+                    .RegisterHandler(n => n.IsPlaying, n => base.RaisePropertyChanged("IsPlaying"))
+                    .RegisterHandler(n => n.ActualTime, n => base.RaisePropertyChanged("ActualTime"));
         }
 
         #region Play/Pause Command
@@ -87,11 +78,11 @@ namespace Xb.Simulador.Viewmodel
         {
             if (IsPlaying)
             {
-                IsPlaying = false;
+                timeManager.Pause();
             }
             else
             {
-                IsPlaying = true;
+                timeManager.Play();
             }
         }
         #endregion
@@ -102,7 +93,7 @@ namespace Xb.Simulador.Viewmodel
             get
             {
                 if (_backStepCommand == null)
-                    _backStepCommand = new RelayCommand(() => this.BackStep(), () => !IsPlaying);
+                    _backStepCommand = new RelayCommand(() => this.BackStep(), () => !IsPlaying && timeManager.CanBackStep());
 
                 return _backStepCommand;
             }
@@ -111,6 +102,7 @@ namespace Xb.Simulador.Viewmodel
 
         void BackStep()
         {
+            timeManager.BackStep();
         }
         #endregion
 
@@ -120,15 +112,16 @@ namespace Xb.Simulador.Viewmodel
             get
             {
                 if (nextStepCommand == null)
-                    nextStepCommand = new RelayCommand(() => this.NextStep(), () => !IsPlaying);
+                    nextStepCommand = new RelayCommand(() => this.NextStep(), () => !IsPlaying && timeManager.CanNextStep());
 
-                return _backStepCommand;
+                return nextStepCommand;
             }
         }
         RelayCommand nextStepCommand;
 
         void NextStep()
         {
+            timeManager.NextStep();
         }
         #endregion
 
@@ -138,7 +131,7 @@ namespace Xb.Simulador.Viewmodel
             get
             {
                 if (backPageCommand == null)
-                    backPageCommand = new RelayCommand(() => this.BackPage(), () => !IsPlaying);
+                    backPageCommand = new RelayCommand(() => this.BackPage(), () => !IsPlaying && timeManager.CanBackPage());
 
                 return backPageCommand;
             }
@@ -147,6 +140,7 @@ namespace Xb.Simulador.Viewmodel
 
         void BackPage()
         {
+            timeManager.BackPage();
         }
         #endregion
 
@@ -156,7 +150,7 @@ namespace Xb.Simulador.Viewmodel
             get
             {
                 if (nextPageCommand == null)
-                    nextPageCommand = new RelayCommand(() => this.NextPage(), () => !IsPlaying);
+                    nextPageCommand = new RelayCommand(() => this.NextPage(), () => !IsPlaying && timeManager.CanNextPage());
 
                 return nextPageCommand;
             }
@@ -165,6 +159,7 @@ namespace Xb.Simulador.Viewmodel
 
         void NextPage()
         {
+            timeManager.NextPage();
         }
         #endregion
 
@@ -174,7 +169,7 @@ namespace Xb.Simulador.Viewmodel
             get
             {
                 if (slowTimeCommand == null)
-                    slowTimeCommand = new RelayCommand(() => this.SlowTime(), () => IsPlaying && timeManager.CanSlowTime());
+                    slowTimeCommand = new RelayCommand(() => this.SlowTime(), () => timeManager.CanSlowTime());
 
                 return slowTimeCommand;
             }
@@ -193,7 +188,7 @@ namespace Xb.Simulador.Viewmodel
             get
             {
                 if (fastTimeCommand == null)
-                    fastTimeCommand = new RelayCommand(() => this.FastTime(), () => IsPlaying && timeManager.CanFastTime());
+                    fastTimeCommand = new RelayCommand(() => this.FastTime(), () => timeManager.CanFastTime());
 
                 return fastTimeCommand;
             }

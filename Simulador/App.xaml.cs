@@ -38,19 +38,11 @@ namespace Simulador
         {
             base.OnStartup(e);
 
-            using (var container = InicializarAutofac())
+            using (var container = InicializarAutofac().BeginLifetimeScope())
             {
                 var window = container.Resolve<MainWindow>();
                 window.Show();
             }
-
-            //MainWindow window = new MainWindow();
-
-            //MainWindowViewModel viewModel = new MainWindowViewModel();
-
-            //window.DataContext = viewModel;
-
-            //window.Show();
         }
 
         private IEnumerable<Assembly> InicializarModulos()

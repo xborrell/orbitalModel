@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\SateliteDataCache.cs" />
     <Compile Include="Viewmodel\PlayerControlViewModel.cs" />
     <Compile Include="View\PlayerControls.xaml.cs">
       <DependentUpon>PlayerControls.xaml</DependentUpon>
@@ -78,7 +79,7 @@
     </Compile>
     <Compile Include="AutofacInitialization.cs" />
     <Compile Include="Model\TimeIntervals.cs" />
-    <Compile Include="Model\SimulatorLoop.cs" />
+    <Compile Include="Model\SateliteDataList.cs" />
     <Compile Include="tools\Messenger.cs" />
     <Compile Include="tools\ObservableObject.cs" />
     <Compile Include="tools\PropertyObserver.cs" />

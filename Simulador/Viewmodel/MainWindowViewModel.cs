@@ -25,7 +25,6 @@ namespace Xb.Simulador.Viewmodel
         public string Accion { get { return model.Satelite.Accion; } }
         public string Actitud { get { return model.Satelite.Actitud; } }
 
-        public string ActualTime { get { return model.ActualTime.ToString(@"dd\.hh\:mm\:ss"); } }
         public string AcceleratedTime
         {
             get { return timeManager.ToString(); }
@@ -36,13 +35,13 @@ namespace Xb.Simulador.Viewmodel
         string accionGuardada = string.Empty;
         string actitudGuardada = string.Empty;
 
-        SimulatorLoop model;
+        SateliteDataList model;
         TimeManager timeManager;
         Timer timer;
         object obj = new object();
         private readonly SynchronizationContext uiContext;
 
-        public MainWindowViewModel(SimulatorLoop model, TimeManager timeManager)
+        public MainWindowViewModel(SateliteDataList model, TimeManager timeManager)
         {
             ControlesViewModel = new PlayerControlsViewModel(timeManager);
 
@@ -53,8 +52,7 @@ namespace Xb.Simulador.Viewmodel
             timer = new Timer(timer_Elapsed, null, 2000, 300);
             this.model = model;
             this.timeManager = timeManager;
-
-            //model.Start();
+            this.timeManager.Model = this.model;
         }
 
         void timer_Elapsed(object stateInfo)
@@ -70,8 +68,6 @@ namespace Xb.Simulador.Viewmodel
         void refreshValues()
         {
             RaisePropertyChanged("AcceleratedTime");
-            RaisePropertyChanged("EllapsedTime");
-            RaisePropertyChanged("EllapsedTime");
             RaisePropertyChanged("AlturaReal");
             RaisePropertyChanged("VelocidadReal");
             RaisePropertyChanged("Altura");
@@ -83,14 +79,14 @@ namespace Xb.Simulador.Viewmodel
 
             if ((accionGuardada != Accion) && (!string.IsNullOrEmpty(Accion)))
             {
-                string msg = string.Format("[{1}] {0}", Accion, ActualTime);
+                string msg = string.Format("[{1}] {0}", Accion, timeManager.ActualTime);
                 Acciones.Insert(0, msg);
                 accionGuardada = Accion;
             }
 
             if ((actitudGuardada != Actitud) && (!string.IsNullOrEmpty(Actitud)))
             {
-                string msg = string.Format("[{1}] {0}", Actitud, ActualTime);
+                string msg = string.Format("[{1}] {0}", Actitud, timeManager.ActualTime);
                 Actitudes.Insert(0, msg);
                 actitudGuardada = Actitud;
             }
@@ -100,49 +96,5 @@ namespace Xb.Simulador.Viewmodel
         {
             return valor < 0 ? "???" : valor.ToString(mascara);
         }
-
-        #region Slow Time Command
-        /// <summary>
-        /// Torna el comandament que obre un nou event
-        /// </summary>
-        public ICommand SlowTimeCommand
-        {
-            get
-            {
-                if (_slowTimeCommand == null)
-                    _slowTimeCommand = new RelayCommand(() => this.SlowTime(), () => timeManager.FactorTemporal != TimeIntervals.Menos1000);
-
-                return _slowTimeCommand;
-            }
-        }
-        RelayCommand _slowTimeCommand;
-
-        void SlowTime()
-        {
-            timeManager.SlowTime();
-        }
-        #endregion
-
-        #region Fast Time Command
-        /// <summary>
-        /// Torna el comandament que obre un nou event
-        /// </summary>
-        public ICommand FastTimeCommand
-        {
-            get
-            {
-                if (_fastTimeCommand == null)
-                    _fastTimeCommand = new RelayCommand(() => this.FastTime(), () => timeManager.FactorTemporal != TimeIntervals.Mas1000);
-
-                return _fastTimeCommand;
-            }
-        }
-        RelayCommand _fastTimeCommand;
-
-        void FastTime()
-        {
-            timeManager.FastTime();
-        }
-        #endregion
     }
 }

@@ -15,15 +15,6 @@
             <RowDefinition />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <GroupBox Grid.Row="0" Grid.Column="0" Header="Gestio del temps" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Padding="5">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Temps transcorregut : " Margin="0,0,5,0" />
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding EllapsedTime}" Width="60px" />
-                <Button Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Center" Width="15" Margin="25,0,10,0" Command="{Binding Path=SlowTimeCommand}"/>
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding AcceleratedTime}" Width="40px" />
-                <Button Content="&gt;" HorizontalAlignment="Left" VerticalAlignment="Center" Width="15" Margin="10,0,25,0" Command="{Binding Path=FastTimeCommand}"/>
-            </StackPanel>
-        </GroupBox>
         <GroupBox Grid.Row="1" Grid.Column="0" Header="Valors reals" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top" Padding="5">
             <StackPanel Orientation="Horizontal">
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="Altura real : " Margin="0,0,5,0" />

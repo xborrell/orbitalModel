@@ -9,9 +9,9 @@ namespace satelite.backend
 {
     public class ToolsFactory : IToolsFactory
     {
-        ILifetimeScope container;
+        IComponentContext container;
 
-        public ToolsFactory(ILifetimeScope c)
+        public ToolsFactory(IComponentContext c)
         {
             container = c;
         }
