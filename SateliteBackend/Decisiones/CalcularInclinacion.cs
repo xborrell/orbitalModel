@@ -12,30 +12,30 @@ namespace satelite.backend.decision
 {
     public class CalcularInclinacion : Decision
     {
-        ConversorOrbital conversor;
+        readonly ConversorOrbital conversor;
 
-        public override bool DebeActuar()
+        public override bool DebeActuar(ISateliteData data)
         {
-            return Data.Inclinacion < 0;
+            return data.Inclinacion < 0;
         }
 
-        public CalcularInclinacion(Constantes constantes, IVectorTools vectorTools, ISateliteData data, int prioridad, ConversorOrbital conversor)
-            : base(constantes, vectorTools, data, prioridad)
+        public CalcularInclinacion(Constantes constantes, IVectorTools vectorTools, int prioridad, ConversorOrbital conversor)
+            : base(constantes, vectorTools, prioridad)
         {
             this.conversor = conversor;
 
-            DefinirPaso(new PasoEnfoqueATierra(data));
-            DefinirPaso(new PasoComprobarEnfoque(data, ActitudRotacion.EnfocadoATierra));
-            DefinirPaso(new PasoGenerico(data, new LogItem(LogType.Paso, "Calc. inclinació", "Calcular l'inclinació"), Calcular));
+            DefinirPaso(new PasoEnfoqueATierra());
+            DefinirPaso(new PasoComprobarEnfoque(ActitudRotacion.EnfocadoATierra));
+            DefinirPaso(new PasoGenerico(new LogItem(LogType.Paso, "Calc. inclinació", "Calcular l'inclinació"), Calcular));
 
             LogData = new LogItem(LogType.Decision, "Calc. Inclinació", "Calculant Inclinació");
         }
 
-        bool Calcular()
+        bool Calcular(ISateliteData data)
         {
-            OrbitalElements elementos = conversor.Convertir(Data.Posicion, Data.Velocidad);
+            var elementos = conversor.Convertir(data.Posicion, data.Velocidad);
 
-            Data.Inclinacion = elementos.Inclination;
+            data.Inclinacion = elementos.Inclination;
             return true;
         }
     }

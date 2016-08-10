@@ -29,7 +29,6 @@ namespace satelite.backend
             builder.Register((c, p) => new CalcularSentidoDeLaOrbita(
                                             c.Resolve<Constantes>(),
                                             c.Resolve<IVectorTools>(),
-                                            p.Named<ISateliteData>("sateliteData"),
                                             0
                                             ))
                    .As<IDecision>();
@@ -37,7 +36,6 @@ namespace satelite.backend
             builder.Register((c, p) => new CalcularApoapsis(
                                             c.Resolve<Constantes>(),
                                             c.Resolve<IVectorTools>(),
-                                            p.Named<ISateliteData>("sateliteData"),
                                             1
                                             ))
                    .As<IDecision>();
@@ -45,7 +43,6 @@ namespace satelite.backend
             builder.Register((c, p) => new CalcularPeriapsis(
                                             c.Resolve<Constantes>(),
                                             c.Resolve<IVectorTools>(),
-                                            p.Named<ISateliteData>("sateliteData"),
                                             2
                                             ))
                    .As<IDecision>();
@@ -53,7 +50,6 @@ namespace satelite.backend
             builder.Register((c, p) => new CalcularInclinacion(
                                             c.Resolve<Constantes>(),
                                             c.Resolve<IVectorTools>(),
-                                            p.Named<ISateliteData>("sateliteData"),
                                             3,
                                             c.Resolve<ConversorOrbital>()
                                             ))
@@ -62,7 +58,6 @@ namespace satelite.backend
             builder.Register((c, p) => new Circularizar(
                                             c.Resolve<Constantes>(),
                                             c.Resolve<IVectorTools>(),
-                                            p.Named<ISateliteData>("sateliteData"),
                                             4
                                             ))
                    .As<IDecision>();
@@ -70,7 +65,6 @@ namespace satelite.backend
             builder.Register((c, p) => new Esperar(
                                             c.Resolve<Constantes>(),
                                             c.Resolve<IVectorTools>(),
-                                            p.Named<ISateliteData>("sateliteData"),
                                             5,
                                             60F
                                             ))

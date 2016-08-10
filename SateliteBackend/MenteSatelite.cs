@@ -11,38 +11,34 @@ namespace satelite.backend
 {
     public class MenteSatelite : IMenteSatelite
     {
-        IEnumerable<IDecision> decisiones;
+        readonly IEnumerable<IDecision> decisiones;
         public IDecision DecisionEnCurso { get; protected set; }
-        ISateliteData data;
 
-        public MenteSatelite(ISateliteData sateliteData, IEnumerable<IDecision> decisiones)
+        public MenteSatelite(IEnumerable<IDecision> decisiones)
         {
-            this.data = data;
             this.decisiones = decisiones.OrderBy(d => d.Prioridad);
-
-            ObtieneLaSiguienteDecision();
         }
 
-        public void Pulse()
+        public void Pulse(ISateliteData data)
         {
             if (DecisionEnCurso == null)
-                ObtieneLaSiguienteDecision();
+                ObtieneLaSiguienteDecision(data);
 
             else if (DecisionEnCurso.DecisionFinalizada)
-                FinalizaDecision();
+                FinalizaDecision(data);
 
             else
-                DecisionEnCurso.Actua();
+                DecisionEnCurso.Actua(data);
         }
 
-        void ObtieneLaSiguienteDecision()
+        void ObtieneLaSiguienteDecision(ISateliteData data)
         {
-            foreach (Decision decision in decisiones)
+            foreach (var decision in decisiones)
             {
-                if (decision.DebeActuar())
+                if (decision.DebeActuar(data))
                 {
                     Log.Decision(decision.LogData);
-                    decision.Inicializar();
+                    decision.Inicializar(data);
                     DecisionEnCurso = decision;
 
                     return;
@@ -50,7 +46,7 @@ namespace satelite.backend
             }
         }
 
-        private void FinalizaDecision()
+        private void FinalizaDecision(ISateliteData data)
         {
             Log.Decision( DecisionEnCurso.LogData);
             DecisionEnCurso = null;

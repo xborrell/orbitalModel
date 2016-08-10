@@ -8,9 +8,9 @@ namespace satelite.backend
 {
     public interface IMotorSatelite
     {
-        void FullPower();
-        void Stop();
-        void CambioDeImpulso(float cambioDeImpulsoPedido);
-        void CalcularImpulso();
+        void FullPower(ISateliteData data);
+        void Stop(ISateliteData data);
+        void CambioDeImpulso(ISateliteData data, float cambioDeImpulsoPedido);
+        void CalcularImpulso(ISateliteData data);
     }
 }

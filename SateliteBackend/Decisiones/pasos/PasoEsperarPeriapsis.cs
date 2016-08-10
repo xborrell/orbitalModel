@@ -10,21 +10,20 @@ namespace satelite.backend.decision.paso
 {
     public class PasoEsperarPeriapsis : Paso
     {
-        public PasoEsperarPeriapsis(ISateliteData data)
-            : base(data)
+        public PasoEsperarPeriapsis()
         {
             LogData = new LogItem(LogType.Paso, "Esperant Periapsis");
         }
 
-        override public void Ejecutar()
+        override public void Ejecutar(ISateliteData data)
         {
-            if (Data.AlturaDeReferencia < Data.Altura)
+            if (data.AlturaDeReferencia < data.Altura)
             {
                 PasoFinalizado = true;
             }
             else
             {
-                Data.AlturaDeReferencia = Data.Altura;
+                data.AlturaDeReferencia = data.Altura;
                 this.SegundosAEsperar = 30;
             }
         }

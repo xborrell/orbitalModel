@@ -11,41 +11,41 @@ namespace satelite.backend.decision
 {
     public class CalcularSentidoDeLaOrbita : Decision
     {
-        public override bool DebeActuar()
+        public override bool DebeActuar(ISateliteData data)
         {
-            return (((Data.Periapsis < 0) || (Data.Apoapsis < 0)) && (Data.OrbitaSubiendo == null));
+            return (((data.Periapsis < 0) || (data.Apoapsis < 0)) && (data.OrbitaSubiendo == null));
         }
 
-        public override void Inicializar()
+        public override void Inicializar(ISateliteData data)
         {
-            base.Inicializar();
+            base.Inicializar(data);
 
-            Data.AlturaDeReferencia = -1;
+            data.AlturaDeReferencia = -1;
         }
 
-        public CalcularSentidoDeLaOrbita(Constantes constantes, IVectorTools vectorTools, ISateliteData data, int prioridad)
-            : base(constantes, vectorTools, data, prioridad)
+        public CalcularSentidoDeLaOrbita(Constantes constantes, IVectorTools vectorTools, int prioridad)
+            : base(constantes, vectorTools, prioridad)
         {
-            DefinirPaso(new PasoEnfoqueATierra(data));
-            DefinirPaso(new PasoComprobarEnfoque(data, ActitudRotacion.EnfocadoATierra));
-            DefinirPaso(new PasoTomarAltura(data));
-            DefinirPaso(new PasoEsperar(constantes, data, 5, new LogItem(LogType.Paso, "Esperar", "Esperant per evaluar el sentit")));
-            DefinirPaso(new PasoGenerico(data, new LogItem(LogType.Paso, "Sentit orbita", "Comprobant el sentit de l'orbita"), ComprobarSiLaOrbitaSubeOBaja));
+            DefinirPaso(new PasoEnfoqueATierra());
+            DefinirPaso(new PasoComprobarEnfoque(ActitudRotacion.EnfocadoATierra));
+            DefinirPaso(new PasoTomarAltura());
+            DefinirPaso(new PasoEsperar(constantes, 5, new LogItem(LogType.Paso, "Esperar", "Esperant per evaluar el sentit")));
+            DefinirPaso(new PasoGenerico(new LogItem(LogType.Paso, "Sentit orbita", "Comprobant el sentit de l'orbita"), ComprobarSiLaOrbitaSubeOBaja));
 
             LogData = new LogItem(LogType.Decision, "Calc. sentit", "Calculant el sentit de l'orbita");
         }
 
-        bool ComprobarSiLaOrbitaSubeOBaja()
+        bool ComprobarSiLaOrbitaSubeOBaja(ISateliteData data)
         {
-            if (Data.AlturaDeReferencia > Data.Altura)
+            if (data.AlturaDeReferencia > data.Altura)
             {
-                Data.OrbitaSubiendo = false;
+                data.OrbitaSubiendo = false;
                 return true;
             }
 
-            if (Data.AlturaDeReferencia < Data.Altura)
+            if (data.AlturaDeReferencia < data.Altura)
             {
-                Data.OrbitaSubiendo = true;
+                data.OrbitaSubiendo = true;
                 return true;
             }
 

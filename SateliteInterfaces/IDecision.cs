@@ -14,9 +14,9 @@ namespace satelite.interfaces
         bool DecisionFinalizada { get; }
         string AccionEnCurso { get; }
 
-        bool DebeActuar();
-        void Inicializar();
+        bool DebeActuar(ISateliteData data);
+        void Inicializar(ISateliteData data);
 
-        void Actua();
+        void Actua(ISateliteData data);
     }
 }

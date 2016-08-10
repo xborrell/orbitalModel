@@ -9,18 +9,17 @@ namespace satelite.backend.decision.paso
 {
     public class PasoGenerico : Paso
     {
-        public Func<bool> Accion { get; protected set; }
+        public Func<ISateliteData, bool> Accion { get; protected set; }
 
-        public PasoGenerico(ISateliteData data, LogItem logItem, Func<bool> paso)
-            : base(data)
+        public PasoGenerico(LogItem logItem, Func<ISateliteData, bool> paso)
         {
             Accion = paso;
             LogData = logItem;
         }
 
-        override public void Ejecutar()
+        override public void Ejecutar(ISateliteData data)
         {
-            if (Accion())
+            if (Accion(data))
                 PasoFinalizado = true;
         }
     }

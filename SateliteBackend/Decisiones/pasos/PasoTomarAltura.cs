@@ -10,15 +10,14 @@ namespace satelite.backend.decision.paso
 {
     public class PasoTomarAltura : Paso
     {
-        public PasoTomarAltura(ISateliteData data)
-            : base(data)
+        public PasoTomarAltura()
         {
             LogData = new LogItem(LogType.Paso, "Alçada referencia", "Mesurar l'Alçada de Referencia");
         }
 
-        override public void Ejecutar()
+        override public void Ejecutar(ISateliteData data)
         {
-            Data.AlturaDeReferencia = Data.Altura;
+            data.AlturaDeReferencia = data.Altura;
             PasoFinalizado = true;
         }
     }

@@ -6,29 +6,27 @@ namespace satelite.backend
 {
     public class CalculadorMovimiento
     {
-        ISateliteData _data;
-        Constantes constantes;
+        readonly Constantes constantes;
 
-        public CalculadorMovimiento(Constantes constantes, ISateliteData sateliteData)
+        public CalculadorMovimiento(Constantes constantes)
         {
-            _data = sateliteData;
             this.constantes = constantes;
         }
 
-        public void CalcularNuevaPosicion()
+        public void CalcularNuevaPosicion(ISateliteData data)
         {
-            Vector fuerzaGravitatoria = CalcularFuerzaGravitatoria();
+            Vector fuerzaGravitatoria = CalcularFuerzaGravitatoria(data);
             Vector aceleracionGravitatoria = fuerzaGravitatoria / constantes.SatellitMass;
 
-            _data.Velocidad += aceleracionGravitatoria * constantes.FixedDeltaTime;
-            Vector desplazamiento = _data.Velocidad * constantes.FixedDeltaTime;
-            _data.Posicion += desplazamiento;
+            data.Velocidad += aceleracionGravitatoria * constantes.FixedDeltaTime;
+            Vector desplazamiento = data.Velocidad * constantes.FixedDeltaTime;
+            data.Posicion += desplazamiento;
         }
 
-        Vector CalcularFuerzaGravitatoria()
+        Vector CalcularFuerzaGravitatoria(ISateliteData data)
         {
-            double gravitationModulus = CalcularAtraccionTerrestre(constantes.SatellitMass, _data.Posicion.Magnitude);
-            Vector gravitationForce = _data.Posicion.Clone();
+            double gravitationModulus = CalcularAtraccionTerrestre(constantes.SatellitMass, data.Posicion.Magnitude);
+            Vector gravitationForce = data.Posicion.Clone();
             gravitationForce.Normalize();
             gravitationForce = gravitationForce * gravitationModulus * -1;
 

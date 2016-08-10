@@ -8,26 +8,24 @@ namespace satelite.backend
 {
     public class MotorSatelite : IMotorSatelite
     {
-        ISateliteData data;
         Action variacionImpulso = null;
         Constantes constantes;
 
-        public MotorSatelite(Constantes constantes, ISateliteData sateliteData)
+        public MotorSatelite(Constantes constantes)
         {
             this.constantes = constantes;
-            this.data = sateliteData;
         }
 
-        public void FullPower()
+        public void FullPower(ISateliteData data)
         {
-            CambioDeImpulso(constantes.ImpulsoMaximo);
+            CambioDeImpulso(data, constantes.ImpulsoMaximo);
         }
-        public void Stop()
+        public void Stop(ISateliteData data)
         {
-            CambioDeImpulso(0);
+            CambioDeImpulso(data, 0);
         }
 
-        public void CambioDeImpulso(float cambioDeImpulsoPedido)
+        public void CambioDeImpulso(ISateliteData data, float cambioDeImpulsoPedido)
         {
             data.ImpulsoSolicitado = -1;
 
@@ -39,29 +37,26 @@ namespace satelite.backend
 
             if (cambioDeImpulsoPedido > data.Impulso)
             {
-                variacionImpulso = () => Acelerar(cambioDeImpulsoPedido);
+                variacionImpulso = () => Acelerar(data, cambioDeImpulsoPedido);
             }
 
             if (cambioDeImpulsoPedido < data.Impulso)
             {
-                variacionImpulso = () => Frenar(cambioDeImpulsoPedido);
+                variacionImpulso = () => Frenar(data, cambioDeImpulsoPedido);
             }
         }
 
-        public void CalcularImpulso()
+        public void CalcularImpulso(ISateliteData data)
         {
             if (data.ImpulsoSolicitado >= 0)
             {
-                CambioDeImpulso(data.ImpulsoSolicitado);
+                CambioDeImpulso(data, data.ImpulsoSolicitado);
             }
 
-            if (variacionImpulso != null)
-            {
-                variacionImpulso();
-            }
+            variacionImpulso?.Invoke();
         }
 
-        void Acelerar(float aceleracionSolicitada)
+        void Acelerar(ISateliteData data, float aceleracionSolicitada)
         {
             var variacion = constantes.VariacionMaximaDelImpulso * constantes.FixedDeltaTime;
 
@@ -74,7 +69,7 @@ namespace satelite.backend
             }
         }
 
-        void Frenar(float frenadoSolicitado)
+        void Frenar(ISateliteData data, float frenadoSolicitado)
         {
             var variacion = constantes.VariacionMaximaDelImpulso * constantes.FixedDeltaTime;
 

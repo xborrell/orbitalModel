@@ -11,23 +11,23 @@ namespace satelite.backend.decision
 {
     public class CalcularPeriapsis : Decision
     {
-        public override bool DebeActuar()
+        public override bool DebeActuar(ISateliteData data)
         {
-            return ((Data.Periapsis < 0) && (Data.OrbitaSubiendo == false));
+            return ((data.Periapsis < 0) && (data.OrbitaSubiendo == false));
         }
 
-        public CalcularPeriapsis(Constantes constantes, IVectorTools vectorTools, ISateliteData data, int prioridad)
-            : base(constantes, vectorTools, data, prioridad)
+        public CalcularPeriapsis(Constantes constantes, IVectorTools vectorTools, int prioridad)
+            : base(constantes, vectorTools, prioridad)
         {
-            DefinirPaso(new PasoEnfoqueATierra(data));
-            DefinirPaso(new PasoComprobarEnfoque(data, ActitudRotacion.EnfocadoATierra));
-            DefinirPaso(new PasoTomarAltura(data));
-            DefinirPaso(new PasoEsperarPeriapsis(data));
-            DefinirPaso(new PasoGenerico(data, new LogItem(LogType.Paso, "Registrant Periapsis"),
-                () =>
+            DefinirPaso(new PasoEnfoqueATierra());
+            DefinirPaso(new PasoComprobarEnfoque(ActitudRotacion.EnfocadoATierra));
+            DefinirPaso(new PasoTomarAltura());
+            DefinirPaso(new PasoEsperarPeriapsis());
+            DefinirPaso(new PasoGenerico(new LogItem(LogType.Paso, "Registrant Periapsis"),
+                (data) =>
                 {
-                    Data.Periapsis = Data.AlturaDeReferencia;
-                    Data.OrbitaSubiendo = null;
+                    data.Periapsis = data.AlturaDeReferencia;
+                    data.OrbitaSubiendo = null;
                     return true;
                 }
             ));

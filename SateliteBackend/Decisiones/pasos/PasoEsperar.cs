@@ -13,18 +13,18 @@ namespace satelite.backend.decision.paso
         public float TiempoAEsperar { get; protected set; }
         public float TiempoRestante { get; protected set; }
 
-        public PasoEsperar(Constantes constantes, ISateliteData data, float segundosAEsperar)
-            : this(constantes, data, segundosAEsperar, null) { }
+        public PasoEsperar(Constantes constantes, float segundosAEsperar)
+            : this(constantes, segundosAEsperar, null) { }
 
-        public PasoEsperar(Constantes constantes, ISateliteData data, float segundosAEsperar, LogItem logItem)
-            : base(data)
+        public PasoEsperar(Constantes constantes, float segundosAEsperar, LogItem logItem)
+            : base()
         {
             this.constantes = constantes;
             TiempoRestante = TiempoAEsperar = segundosAEsperar;
             LogData = logItem;
         }
 
-        override public void Ejecutar()
+        override public void Ejecutar(ISateliteData data)
         {
             TiempoRestante -= constantes.FixedDeltaTime;
 

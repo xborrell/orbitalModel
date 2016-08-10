@@ -10,18 +10,18 @@ namespace satelite.backend.decision
 {
     public class PosicionarSateliteEnActitudOrbital : Decision
     {
-        public PosicionarSateliteEnActitudOrbital(Constantes constantes, IVectorTools vectorTools, SateliteData data, int prioridad)
-            : base(constantes, vectorTools, data, prioridad)
+        public PosicionarSateliteEnActitudOrbital(Constantes constantes, IVectorTools vectorTools, int prioridad)
+            : base(constantes, vectorTools, prioridad)
         {
-            DefinirPaso(new PasoEnfoqueOrbital(data));
-            DefinirPaso(new PasoComprobarEnfoque(data, ActitudRotacion.Orbital));
+            DefinirPaso(new PasoEnfoqueOrbital());
+            DefinirPaso(new PasoComprobarEnfoque(ActitudRotacion.Orbital));
 
             LogData = new LogItem(0, "Orientació orbital", "Orientar el satel·lit amb l'orbita");
         }
 
-        public override bool DebeActuar()
+        public override bool DebeActuar(ISateliteData data)
         {
-            return Data.Actitud != ActitudRotacion.Orbital;
+            return data.Actitud != ActitudRotacion.Orbital;
         }
     }
 }

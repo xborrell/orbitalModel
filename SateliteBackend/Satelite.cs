@@ -13,14 +13,13 @@ namespace satelite.backend
         public string Nombre;
         public Vector PosicionInicial;
         public Vector VelocidadInicial;
+        readonly CalculadorMovimiento calculadorMovimiento;
+        readonly CalculadorRotacion calculadorRotacion;
 
-        CalculadorMovimiento calculadorMovimiento;
-        CalculadorRotacion calculadorRotacion;
-
-        public float Altura { get { return Data.Altura; } }
-        public float Apoapsis { get { return Data.Apoapsis; } }
-        public float Periapsis { get { return Data.Periapsis; } }
-        public float Inclinacion { get { return Data.Inclinacion; } }
+        public float Altura => Data.Altura;
+        public float Apoapsis => Data.Apoapsis;
+        public float Periapsis => Data.Periapsis;
+        public float Inclinacion => Data.Inclinacion;
 
         public string Accion
         {
@@ -54,20 +53,20 @@ namespace satelite.backend
             IMotorSatelite motor
             )
         {
+            this.Data = sateliteData;
             this.calculadorMovimiento = calculadorMovimiento;
             this.calculadorRotacion = calculadorRotacion;
             this.Mente = mente;
-            this.Data = sateliteData;
             this.Motor = motor;
         }
 
         public void Pulse()
         {
-            Mente.Pulse();
-            Motor.CalcularImpulso();
+            Mente.Pulse(Data);
+            Motor.CalcularImpulso(Data);
 
-            calculadorMovimiento.CalcularNuevaPosicion();
-            calculadorRotacion.CalcularNuevaRotacion();
+            calculadorMovimiento.CalcularNuevaPosicion(Data);
+            calculadorRotacion.CalcularNuevaRotacion(Data);
         }
     }
 }

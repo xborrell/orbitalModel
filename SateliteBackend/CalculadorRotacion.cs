@@ -6,22 +6,19 @@ namespace satelite.backend
 {
     public class CalculadorRotacion
     {
-        IToolsFactory factory;
+        readonly IToolsFactory factory;
         IManiobraRotacion maniobra = null;
 
-        protected ISateliteData data;
-
-        public CalculadorRotacion(IToolsFactory factory, ISateliteData sateliteData)
+        public CalculadorRotacion(IToolsFactory factory)
         {
             this.factory = factory;
-            this.data = sateliteData;
         }
 
-        public void CalcularNuevaRotacion()
+        public void CalcularNuevaRotacion(ISateliteData data)
         {
             if (data.ActitudSolicitada != ActitudRotacion.Ninguna)
             {
-                GestionarCambioDeRotacion();
+                GestionarCambioDeRotacion(data);
             }
 
             if ((maniobra != null) && (maniobra.ManiobraCompletada))
@@ -34,60 +31,60 @@ namespace satelite.backend
             {
                 case ActitudRotacion.CaidaLibre: break;
                 case ActitudRotacion.Maniobrando: data.Orientacion = maniobra.CalcularNuevaOrientacion(); break;
-                case ActitudRotacion.EnfocadoATierra: data.Orientacion = CalcularOrientacionATierra(); break;
-                case ActitudRotacion.Orbital: data.Orientacion = CalcularOrientacionOrbital(); break;
+                case ActitudRotacion.EnfocadoATierra: data.Orientacion = CalcularOrientacionATierra(data); break;
+                case ActitudRotacion.Orbital: data.Orientacion = CalcularOrientacionOrbital(data); break;
                 default: throw new ArgumentException("Actitud no implementada en CalculadorRotacion2");
             }
         }
 
-        private void GestionarCambioDeRotacion()
+        private void GestionarCambioDeRotacion(ISateliteData data)
         {
             if (data.ActitudSolicitada != data.Actitud)
             {
                 switch (data.ActitudSolicitada)
                 {
-                    case ActitudRotacion.CaidaLibre: RotacionLibre(); break;
-                    case ActitudRotacion.EnfocadoATierra: OrientacionATierra(); break;
-                    case ActitudRotacion.Orbital: OrientacionOrbital(); break;
+                    case ActitudRotacion.CaidaLibre: RotacionLibre(data); break;
+                    case ActitudRotacion.EnfocadoATierra: OrientacionATierra(data); break;
+                    case ActitudRotacion.Orbital: OrientacionOrbital(data); break;
                 }
             }
             data.ActitudSolicitada = ActitudRotacion.Ninguna;
         }
 
-        private void RotacionLibre()
+        private void RotacionLibre(ISateliteData data)
         {
             data.Actitud = ActitudRotacion.CaidaLibre;
         }
 
-        private void OrientacionOrbital()
+        private void OrientacionOrbital(ISateliteData data)
         {
             data.Actitud = ActitudRotacion.Maniobrando;
-            Vector orientacion = CalcularOrientacionOrbital();
+            Vector orientacion = CalcularOrientacionOrbital(data);
 
             maniobra = factory.CreateManiobra(ActitudRotacion.Orbital, data, orientacion);
         }
 
-        private void OrientacionATierra()
+        private void OrientacionATierra(ISateliteData data)
         {
             data.Actitud = ActitudRotacion.Maniobrando;
-            Vector orientacion = CalcularOrientacionATierra();
+            Vector orientacion = CalcularOrientacionATierra(data);
 
             maniobra = factory.CreateManiobra(ActitudRotacion.EnfocadoATierra, data, orientacion);
         }
 
-        Vector CalcularOrientacionATierra()
+        Vector CalcularOrientacionATierra(ISateliteData data)
         {
-            Vector forward = data.Posicion;
+            Vector forward = data.Posicion.Clone();
             forward.Normalize();
             forward *= -1;
 
             return forward;
         }
 
-        Vector CalcularOrientacionOrbital()
+        Vector CalcularOrientacionOrbital(ISateliteData data)
         {
 
-            Vector forward = data.Velocidad;
+            Vector forward = data.Velocidad.Clone();
             forward.Normalize();
 
             return forward;

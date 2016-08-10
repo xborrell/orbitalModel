@@ -60,7 +60,7 @@ namespace satelite.backend
             Velocidad = velocidad;
             Posicion = posicion;
 
-            Orientacion = constantes.XAxis;
+            Orientacion = constantes.XAxis.Clone();
             Orientacion.Normalize();
 
             Camara = posicion.Clone();

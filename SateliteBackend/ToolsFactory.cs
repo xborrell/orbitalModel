@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
+using Autofac.Core;
 using satelite.interfaces;
 
 namespace satelite.backend
 {
     public class ToolsFactory : IToolsFactory
     {
-        IComponentContext container;
+        readonly IComponentContext container;
 
         public ToolsFactory(IComponentContext c)
         {
@@ -19,9 +20,9 @@ namespace satelite.backend
         public Vector CreateVector(float x, float y, float z)
         {
             return container.Resolve<Vector>(
-                new TypedParameter(typeof(float), x),
-                new TypedParameter(typeof(float), y),
-                new TypedParameter(typeof(float), z)
+                new NamedParameter("x", x),
+                new NamedParameter("y", y),
+                new NamedParameter("z", z)
             );
         }
 
@@ -41,33 +42,8 @@ namespace satelite.backend
                 new NamedParameter("velocidad", velocidadInicial)
                 );
 
-            var calculadorRotacion = container.Resolve<CalculadorRotacion>(
-                new NamedParameter("sateliteData", sateliteData)
-                );
-
-            var calculadorMovimiento = container.Resolve<CalculadorMovimiento>(
-                new NamedParameter("sateliteData", sateliteData)
-                );
-
-            var decisiones = container.Resolve<IEnumerable<IDecision>>(
-                new NamedParameter("sateliteData", sateliteData)
-                );
-
-            var mente = container.Resolve<IMenteSatelite>(
-                new NamedParameter("sateliteData", sateliteData),
-                new NamedParameter("decisiones", decisiones)
-            );
-
-            var motor = container.Resolve<IMotorSatelite>(
-                new NamedParameter("sateliteData", sateliteData)
-            );
-
             return container.Resolve<ISatelite>(
-                new NamedParameter("sateliteData", sateliteData),
-                new NamedParameter("calculadorRotacion", calculadorRotacion),
-                new NamedParameter("calculadorMovimiento", calculadorMovimiento),
-                new NamedParameter("mente", mente),
-                new NamedParameter("motor", motor)
+                new NamedParameter("sateliteData", sateliteData)
             );
         }
     }

@@ -11,23 +11,23 @@ namespace satelite.backend.decision
 {
     public class CalcularApoapsis : Decision
     {
-        public override bool DebeActuar()
+        public override bool DebeActuar(ISateliteData data)
         {
-            return ((Data.Apoapsis < 0) && (Data.OrbitaSubiendo == true));
+            return ((data.Apoapsis < 0) && (data.OrbitaSubiendo == true));
         }
 
-        public CalcularApoapsis(Constantes constantes, IVectorTools vectorTools, ISateliteData data, int prioridad)
-            : base(constantes, vectorTools, data, prioridad)
+        public CalcularApoapsis(Constantes constantes, IVectorTools vectorTools, int prioridad)
+            : base(constantes, vectorTools, prioridad)
         {
-            DefinirPaso(new PasoEnfoqueATierra(data));
-            DefinirPaso(new PasoComprobarEnfoque(data, ActitudRotacion.EnfocadoATierra));
-            DefinirPaso(new PasoTomarAltura(data));
-            DefinirPaso(new PasoEsperarApoapsis(data));
-            DefinirPaso(new PasoGenerico(data, new LogItem(LogType.Paso, "Registrant Apoapsis"),
-                () =>
+            DefinirPaso(new PasoEnfoqueATierra());
+            DefinirPaso(new PasoComprobarEnfoque(ActitudRotacion.EnfocadoATierra));
+            DefinirPaso(new PasoTomarAltura());
+            DefinirPaso(new PasoEsperarApoapsis());
+            DefinirPaso(new PasoGenerico(new LogItem(LogType.Paso, "Registrant Apoapsis"),
+                (data) =>
                 {
-                    Data.Apoapsis = Data.AlturaDeReferencia;
-                    Data.OrbitaSubiendo = null;
+                    data.Apoapsis = data.AlturaDeReferencia;
+                    data.OrbitaSubiendo = null;
                     return true;
                 }
             ));

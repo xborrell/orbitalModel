@@ -9,11 +9,10 @@ namespace satelite.interfaces
 {
     public interface IPaso : ILogable
     {
-        ISateliteData Data { get; }
         bool PasoFinalizado { get; }
         float SegundosAEsperar { get; set; }
 
-        void Inicializar();
-        void Ejecutar();
+        void Inicializar(ISateliteData data);
+        void Ejecutar(ISateliteData data);
     }
 }

@@ -8,6 +8,6 @@ namespace satelite.interfaces
     public interface IMenteSatelite
     {
         IDecision DecisionEnCurso { get; }
-        void Pulse();
+        void Pulse(ISateliteData data);
     }
 }

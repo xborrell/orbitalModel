@@ -10,15 +10,14 @@ namespace satelite.backend.decision.paso
 {
     public class PasoEnfoqueATierra : Paso
     {
-        public PasoEnfoqueATierra(ISateliteData data)
-            : base(data)
+        public PasoEnfoqueATierra()
         {
             LogData = new LogItem(LogType.Paso, "Orientació terra", "Demanar l'orientació a terra.");
         }
 
-        override public void Ejecutar()
+        override public void Ejecutar(ISateliteData data)
         {
-            Data.ActitudSolicitada = ActitudRotacion.EnfocadoATierra;
+            data.ActitudSolicitada = ActitudRotacion.EnfocadoATierra;
 
             PasoFinalizado = true;
         }

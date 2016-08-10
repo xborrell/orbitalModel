@@ -12,16 +12,15 @@ namespace satelite.backend.decision.paso
     {
         public ActitudRotacion ActitudDeseada { get; protected set; }
 
-        public PasoComprobarEnfoque(ISateliteData data, ActitudRotacion actitudDeseada)
-            : base(data)
+        public PasoComprobarEnfoque(ActitudRotacion actitudDeseada)
         {
             ActitudDeseada = actitudDeseada;
             LogData = new LogItem(LogType.Paso, "Esperar Orientació", "Esperar l'orientació demanada.");
         }
 
-        override public void Ejecutar()
+        override public void Ejecutar(ISateliteData data)
         {
-            PasoFinalizado = (Data.Actitud == ActitudDeseada);
+            PasoFinalizado = (data.Actitud == ActitudDeseada);
         }
     }
 }

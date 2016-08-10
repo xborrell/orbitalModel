@@ -10,15 +10,15 @@ namespace satelite.backend.decision
 {
     public class Esperar : Decision
     {
-        public Esperar(Constantes constantes, IVectorTools vectorTools, ISateliteData data, int prioridad, float segundosAEsperar)
-            : base(constantes, vectorTools, data, prioridad)
+        public Esperar(Constantes constantes, IVectorTools vectorTools, int prioridad, float segundosAEsperar)
+            : base(constantes, vectorTools, prioridad)
         {
             SolicitarEspera(segundosAEsperar);
 
-            LogData = new LogItem(LogType.Decision, "Esperant", string.Format("Esperant {0} segons", segundosAEsperar));
+            LogData = new LogItem(LogType.Decision, "Esperant", $"Esperant {segundosAEsperar} segons");
         }
 
-        public override bool DebeActuar()
+        public override bool DebeActuar(ISateliteData data)
         {
             return true; ;
         }

@@ -12,9 +12,9 @@ namespace satelite.implementation.wpf
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<WpfVector>().As<Vector>()
-                .WithParameter(new TypedParameter(typeof(float), "x"))
-                .WithParameter(new TypedParameter(typeof(float), "y"))
-                .WithParameter(new TypedParameter(typeof(float), "z"))
+                .WithParameter("x", "x")
+                .WithParameter("y", "y")
+                .WithParameter("z", "z")
                 ;
 
             builder.RegisterType<WpfVectorTools>().As<IVectorTools>();

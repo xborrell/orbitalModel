@@ -28,22 +28,20 @@ namespace satelite.backend.decision.paso
         }
         ILogItem _logItem = null;
 
-        public ISateliteData Data { get; protected set; }
         public bool PasoFinalizado { get; protected set; }
         public float SegundosAEsperar { get; set; }
 
-        public Paso(ISateliteData data)
+        protected Paso()
         {
-            Data = data;
             PasoFinalizado = false;
             SegundosAEsperar = 0;
         }
 
-        virtual public void Inicializar()
+        virtual public void Inicializar(ISateliteData data)
         {
             PasoFinalizado = false;
         }
 
-        abstract public void Ejecutar();
+        abstract public void Ejecutar(ISateliteData data);
     }
 }

@@ -32,29 +32,27 @@ namespace satelite.backend.decision
         }
         ILogItem _logItem = null;
 
-        private List<IPaso> pasosAEjecutar = new List<IPaso>();
-        private List<IPaso> DefinicionDePasos = new List<IPaso>();
-        public IPaso PasoActual { get { return pasosAEjecutar.Count > 0 ? pasosAEjecutar[0] : null; } }
+        private readonly List<IPaso> pasosAEjecutar = new List<IPaso>();
+        private readonly List<IPaso> DefinicionDePasos = new List<IPaso>();
+        public IPaso PasoActual => pasosAEjecutar.Count > 0 ? pasosAEjecutar[0] : null;
 
         public bool DecisionFinalizada { get; protected set; }
-        protected ISateliteData Data { get; set; }
         protected IVectorTools VectorTools { get; set; }
 
-        abstract public bool DebeActuar();
+        abstract public bool DebeActuar(ISateliteData data);
 
-        public Decision(Constantes constantes, IVectorTools vectorTools, ISateliteData data, int prioridad)
+        protected Decision(Constantes constantes, IVectorTools vectorTools, int prioridad)
         {
             this.constantes = constantes;
             VectorTools = vectorTools;
-            Data = data;
             Prioridad = prioridad;
         }
 
-        virtual public void Inicializar()
+        virtual public void Inicializar(ISateliteData data)
         {
             DecisionFinalizada = false;
             pasosAEjecutar.AddRange(DefinicionDePasos);
-            pasosAEjecutar.ForEach(x => x.Inicializar());
+            pasosAEjecutar.ForEach(x => x.Inicializar(data));
 
             if (pasosAEjecutar.Count > 0)
                 Log.Paso(pasosAEjecutar[0].LogData);
@@ -84,7 +82,7 @@ namespace satelite.backend.decision
             DefinicionDePasos.Add(paso);
         }
 
-        public void Actua()
+        public void Actua(ISateliteData data)
         {
             while (pasosAEjecutar[0].PasoFinalizado)
             {
@@ -102,20 +100,20 @@ namespace satelite.backend.decision
                     Log.Paso(pasosAEjecutar[0].LogData);
             }
 
-            pasosAEjecutar[0].Ejecutar();
+            pasosAEjecutar[0].Ejecutar(data);
 
             var segundosAEsperar = pasosAEjecutar[0].SegundosAEsperar;
 
             if (segundosAEsperar > 0)
             {
-                pasosAEjecutar.Insert(0, new PasoEsperar(constantes, Data, segundosAEsperar));
+                pasosAEjecutar.Insert(0, new PasoEsperar(constantes, segundosAEsperar));
                 pasosAEjecutar[0].SegundosAEsperar = 0;
             }
         }
 
         protected void SolicitarEspera(float segundosAEsperar)
         {
-            pasosAEjecutar.Insert(0, new PasoEsperar(constantes, Data, segundosAEsperar));
+            pasosAEjecutar.Insert(0, new PasoEsperar(constantes, segundosAEsperar));
         }
     }
 }
